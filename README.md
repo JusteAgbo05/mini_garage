@@ -1,59 +1,254 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Mini Garage - Laravel 12
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Projet Laravel 12 de gestion d'un garage de reparation automobile,
+realise dans le cadre de l'Activite 4 du cours Developpement Web
+niveau avance (Programme DCLIC / OIF).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Presentation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+L'application permet de gerer les vehicules, les reparations et les
+techniciens d'un garage automobile. Elle couvre la persistance des
+donnees avec Eloquent ORM, une API REST et une interface Blade
+avec Bootstrap 5.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Fonctionnalites
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- Gestion complete des vehicules (CRUD)
+- Gestion complete des reparations (CRUD)
+- Gestion complete des techniciens (CRUD)
+- Recherche de vehicules par marque ou immatriculation
+- Assignation multiple de techniciens a une reparation
+- API REST testee avec Thunder Client
+- Composant Blade reutilisable (VehiculeCard)
+- Model Binding dans les controleurs
+- Laravel Debugbar en mode developpement
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Technologies utilisees
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Technologie       | Version  | Role                        |
+|-------------------|----------|-----------------------------|
+| Laravel           | 12.x     | Framework PHP backend       |
+| PHP               | 8.2.12   | Langage de programmation    |
+| MySQL             | XAMPP    | Base de donnees             |
+| Bootstrap         | 5.3.3    | Framework CSS               |
+| Bootstrap Icons   | 1.11.3   | Icones                      |
+| Laravel Debugbar  | --dev    | Debogage                    |
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Prerequis
 
-## Contributing
+- PHP >= 8.2
+- Composer
+- MySQL (XAMPP ou autre)
+- Laravel 12
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Installation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 1. Cloner le depot
 
-## Security Vulnerabilities
+```bash
+git clone https://github.com/ton-username/mini_garage.git
+cd mini_garage
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 2. Installer les dependances
 
-## License
+```bash
+composer install
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 3. Configurer l'environnement
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Ouvre le fichier `.env` et configure la base de donnees :
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=garage_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 4. Creer la base de donnees
+
+Cree une base de donnees nommee `garage_db` dans phpMyAdmin puis execute :
+
+```bash
+php artisan migrate
+```
+
+### 5. Peupler la base de donnees
+
+```bash
+php artisan db:seed
+```
+
+
+### 6. Lancer le serveur
+
+```bash
+php artisan serve
+```
+
+L'application est accessible sur `http://127.0.0.1:8000`.
+
+---
+
+## Structure de la base de donnees
+
+1. table_vehicules
+
+id, immatriculation, marque, modele, couleur,
+
+annee, kilometrage, carrosserie, energie, boite
+
+2. table_reparations
+
+id, vehicule_id (FK), date,
+
+duree_main_oeuvre, objet_reparation
+
+3. table_techniciens
+
+id, nom, prenom, specialite
+
+4. table_reparation_technicien (table pivot)
+
+reparation_id (FK), technicien_id (FK)
+
+---
+
+## Relations Eloquent
+
+Vehicule    --< Reparation        (hasMany / belongsTo)
+
+Reparation  >--< Technicien       (belongsToMany)
+
+---
+
+## API REST
+
+Base URL : `http://127.0.0.1:8000/api`
+
+| Methode | Endpoint                  | Action                      |
+|---------|---------------------------|-----------------------------|
+| GET     | /vehicules                | Liste des vehicules         |
+| GET     | /vehicules/{id}           | Detail d'un vehicule        |
+| POST    | /vehicules                | Creer un vehicule           |
+| PUT     | /vehicules/{id}           | Modifier un vehicule        |
+| DELETE  | /vehicules/{id}           | Supprimer un vehicule       |
+| GET     | /reparations              | Liste des reparations       |
+| GET     | /reparations/{id}         | Detail d'une reparation     |
+| POST    | /reparations              | Creer une reparation        |
+| PUT     | /reparations/{id}         | Modifier une reparation     |
+| DELETE  | /reparations/{id}         | Supprimer une reparation    |
+| GET     | /techniciens              | Liste des techniciens       |
+| GET     | /techniciens/{id}         | Detail d'un technicien      |
+| POST    | /techniciens              | Creer un technicien         |
+| PUT     | /techniciens/{id}         | Modifier un technicien      |
+| DELETE  | /techniciens/{id}         | Supprimer un technicien     |
+
+---
+
+## Exemple de requete API
+
+**Creer un vehicule :**
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/vehicules \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "immatriculation": "AB-123-CD",
+    "marque": "Renault",
+    "modele": "Clio",
+    "couleur": "Rouge",
+    "annee": 2020,
+    "kilometrage": 45000,
+    "carrosserie": "Berline",
+    "energie": "Essence",
+    "boite": "Manuelle"
+  }'
+```
+
+---
+
+## Structure du projet
+
+mini_garage/
+
+├── app/
+
+│   ├── Http/Controllers/
+
+│   │   ├── VehiculeController.php
+
+│   │   ├── ReparationController.php
+
+│   │   └── TechnicienController.php
+
+│   ├── Models/
+
+│   │   ├── Vehicule.php
+
+│   │   ├── Reparation.php
+
+│   │   └── Technicien.php
+
+│   └── View/Components/
+
+│       └── VehiculeCard.php
+
+├── database/
+
+│   ├── factories/
+
+│   ├── migrations/
+
+│   └── seeders/
+
+├── resources/views/
+
+│   ├── base.blade.php
+
+│   ├── components/
+
+│   │   └── vehicule-card.blade.php
+
+│   └── garage/
+
+│       ├── vehicules/
+
+│       ├── reparations/
+
+│       └── techniciens/
+
+└── routes/
+
+├── web.php
+
+└── api.php
+
+---
+
+## Auteur
+
+Réalisé par Juste Vivien Agbo
+
+Cours Developpement Web -- Niveau avance
+Programme DCLIC / OIF -- Juin 2026
